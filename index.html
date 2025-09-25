@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saison 2024/2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5em;
+            color: #fff;
+        }
+
+        canvas {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            display: block;
+        }
+
+        #timelineChart {
+            max-width: 90%;
+            height: auto;
+        }
+
+        select {
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV Timeline Plot</h1>
+    <select id="nameSelector" onchange="navigateToPage()">
+        <option value="">Select a Name</option>
+        <option value="CS.html">CS</option>
+        <option value="EB.html">EB</option>
+        <option value="JH.html">JH</option>
+        <option value="JW.html">JW</option>
+        <option value="KD.html">KD</option>
+        <option value="LB.html">LB</option>
+        <option value="LH.html">LH</option>
+        <option value="LL.html">LL</option>
+        <option value="MW.html">MW</option>
+        <option value="PB.html">PB</option>
+        <option value="TC.html">TC</option>
+    </select>
+    <canvas id="timelineChart" width="800" height="400"></canvas>
+
+    <script>
+        // Fetch data from points.csv and render the chart
+        fetch('points.csv')
+            .then(response => response.text())
+            .then(data => {
+                console.log('CSV Data Loaded:', data); // Debugging log
+                const rows = data.split('\n');
+                const header = rows[0].split(',');
+                const labels = []; // Weeks for x-axis
+                const datasets = header.slice(1).map(name => ({
+                    label: name,
+                    data: [],
+                    borderColor: `#${Math.floor(Math.random()*16777215).toString(16)}`,
+                    fill: false
+                }));
+
+                rows.slice(1).forEach((row, rowIndex) => {
+                    const [week, ...values] = row.split(',');
+                    if (week) {
+                        labels.push(week);
+                        values.forEach((value, index) => {
+                            const cumulativeValue = (datasets[index].data[rowIndex - 1] || 0) + (parseInt(value) || 0);
+                            datasets[index].data.push(cumulativeValue);
+                        });
+                    }
+                });
+
+                const ctx = document.getElementById('timelineChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Cumulative Points per Name Over Weeks'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Week'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Cumulative Points'
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading CSV:', error));
+
+        function navigateToPage() {
+            const selector = document.getElementById('nameSelector');
+            const selectedPage = selector.value;
+            if (selectedPage) {
+                window.location.href = selectedPage;
+            }
+        }
+    </script>
+</body>
+</html>
