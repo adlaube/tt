@@ -1,12 +1,11 @@
 Name,Stärken,Schwächen,Spielsystem,Spielzug
-EB,Stark1,Schwach1,System1,Zug1
-PB,Stark2,Schwach2,System2,Zug2
-LB,Stark3,Schwach3,System3,Zug3
-TC,Stark4,Schwach4,System4,Zug4
-JH,Stark5,Schwach5,System5,Zug5
-LH,Stark6,Schwach6,System6,Zug6
-LL,Stark7,Schwach7,System7,Zug7
-CS,Stark8,Schwach8,System8,Zug8
-MW,Stark9,Schwach9,System9,Zug9
-JW,Stark10,Schwach10,System10,Zug10
-KD,Stark11,Schwach11,System11,Zug11
+EB,-,-,-,
+PB,Weicher VH Top,"Block, RH Top",Off-,"US/Tomahawk, VH"
+LB,"VH Schuss & Schupf",Weicher Topspin,Off,"RH Seitschnitt auf Wechselpunkt, Schuss"
+TC,Topspin,"Schupfduell & Kickaufschlaege",All+,"Kickaufschlag & Halbdistanz Angriff"
+JH,Harter VH Topspin,"Topspin auf US & Blocken",Off,Pendulum / Tomahawk Wechselpunkt
+LH,VH Schuss,,?,Tomahawk Wechselpunkt
+LL,-,-,-,-
+CS,VH Topspin,"lang RH angespielt werden & Wechselpunkt",Off-,RH Seitunterschnitt auf Wechselpunkt 
+MW,-,-,-,
+KD,-,-,-,-
