@@ -27,6 +27,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin: 20px auto;
             display: block;
+            max-width: 100%; /* Ensure the plot is responsive */
+            height: auto; /* Maintain aspect ratio */
         }
 
         #timelineChart {
@@ -42,6 +44,16 @@
             border-radius: 5px;
             background: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em; /* Adjust heading size for smaller screens */
+            }
+
+            canvas {
+                margin: 10px auto; /* Reduce margin for smaller screens */
+            }
         }
     </style>
 </head>
