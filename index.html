@@ -77,20 +77,6 @@
 </head>
 <body>
     <h1>Saison 2025/2026</h1>
-    <select id="nameSelector" onchange="navigateToPage()">
-        <option value="">Select a Name</option>
-        <option value="CS.html">CS</option>
-        <option value="EB.html">EB</option>
-        <option value="JH.html">JH</option>
-        <option value="JW.html">JW</option>
-        <option value="KD.html">KD</option>
-        <option value="LB.html">LB</option>
-        <option value="LH.html">LH</option>
-        <option value="LL.html">LL</option>
-        <option value="MW.html">MW</option>
-        <option value="PB.html">PB</option>
-        <option value="TC.html">TC</option>
-    </select>
     <div id="scoreboard" class="scoreboard"></div>
 
     <script>
@@ -131,6 +117,11 @@
                     scoreRow.style.border = '1px solid #ccc';
                     scoreRow.style.borderRadius = '5px';
                     scoreRow.style.backgroundColor = '#f9f9f9';
+                    scoreRow.style.cursor = 'pointer';
+
+                    scoreRow.onclick = () => {
+                        window.location.href = `${name}.html`;
+                    };
 
                     const nameElement = document.createElement('span');
                     nameElement.textContent = name;
@@ -146,14 +137,6 @@
                 document.body.appendChild(scoreboard);
             })
             .catch(error => console.error('Error loading CSV:', error));
-
-        function navigateToPage() {
-            const selector = document.getElementById('nameSelector');
-            const selectedPage = selector.value;
-            if (selectedPage) {
-                window.location.href = selectedPage;
-            }
-        }
     </script>
 </body>
 </html>
