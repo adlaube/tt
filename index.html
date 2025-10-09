@@ -46,6 +46,24 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
+        .scoreboard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            width: 300px;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em; /* Adjust heading size for smaller screens */
@@ -73,69 +91,59 @@
         <option value="PB.html">PB</option>
         <option value="TC.html">TC</option>
     </select>
-    <canvas id="timelineChart" width="800" height="400"></canvas>
+    <div id="scoreboard" class="scoreboard"></div>
 
     <script>
-        // Fetch data from points.csv and render the chart
+        // Fetch data from points.csv and render the scoreboard
         fetch('points.csv')
             .then(response => response.text())
             .then(data => {
                 console.log('CSV Data Loaded:', data); // Debugging log
                 const rows = data.split('\n');
                 const header = rows[0].split(',');
-                const labels = []; // Weeks for x-axis
-                const datasets = header.slice(1).map(name => ({
-                    label: name,
-                    data: [],
-                    borderColor: `#${Math.floor(Math.random()*16777215).toString(16)}`,
-                    fill: false
-                }));
+                const names = header.slice(1); // Names for the scoreboard
+                const scores = new Array(names.length).fill(0);
 
-                rows.slice(1).forEach((row, rowIndex) => {
-                    const [week, ...values] = row.split(',');
-                    if (week) {
-                        labels.push(week);
-                        values.forEach((value, index) => {
-                            const cumulativeValue = (datasets[index].data[rowIndex - 1] || 0) + (parseInt(value) || 0);
-                            datasets[index].data.push(cumulativeValue);
-                        });
-                    }
+                rows.slice(1).forEach(row => {
+                    const [, ...values] = row.split(',');
+                    values.forEach((value, index) => {
+                        scores[index] += parseInt(value) || 0;
+                    });
                 });
 
-                const ctx = document.getElementById('timelineChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top'
-                            },
-                            title: {
-                                display: true,
-                                text: 'Cumulative Points per Name Over Weeks'
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Week'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Cumulative Points'
-                                }
-                            }
-                        }
-                    }
+                // Combine names and scores, then sort by score in descending order
+                const sortedScores = names.map((name, index) => ({ name, score: scores[index] }))
+                                          .sort((a, b) => b.score - a.score);
+
+                const scoreboard = document.createElement('div');
+                scoreboard.style.display = 'flex';
+                scoreboard.style.flexDirection = 'column';
+                scoreboard.style.alignItems = 'center';
+                scoreboard.style.marginTop = '20px';
+
+                sortedScores.forEach(({ name, score }) => {
+                    const scoreRow = document.createElement('div');
+                    scoreRow.style.display = 'flex';
+                    scoreRow.style.justifyContent = 'space-between';
+                    scoreRow.style.width = '300px';
+                    scoreRow.style.margin = '5px 0';
+                    scoreRow.style.padding = '10px';
+                    scoreRow.style.border = '1px solid #ccc';
+                    scoreRow.style.borderRadius = '5px';
+                    scoreRow.style.backgroundColor = '#f9f9f9';
+
+                    const nameElement = document.createElement('span');
+                    nameElement.textContent = name;
+
+                    const scoreElement = document.createElement('span');
+                    scoreElement.textContent = score;
+
+                    scoreRow.appendChild(nameElement);
+                    scoreRow.appendChild(scoreElement);
+                    scoreboard.appendChild(scoreRow);
                 });
+
+                document.body.appendChild(scoreboard);
             })
             .catch(error => console.error('Error loading CSV:', error));
 
