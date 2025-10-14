@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KG</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #d4fc79, #96e6a1);
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5em;
+            color: #fff;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>KG</h1>
+    <p>Kurzvorstellung Spielsystem:</p>
+    <ul>
+        <li>OFF+ = Beidseitiges aggressive Spinangriffsspiel</li>
+        <li>OFF = Einseitiges aggressives Spinangriffsspiel</li>
+        <li>OFF- = Beidseitiges Spinangriffsspiel aus der Halbdistanz</li>
+        <li>ALL+ = Offensives Allroundspiel mit aktiven und passiven Elementen</li>
+        <li>ALL = Tischnahes Block- und Konterspiel</li>
+        <li>ALL- = Aktives Abwehrspiel</li>
+        <li>DEF+ =Aktives Spiel mit langen Noppen sein: Druckschupf, Blocks, Konter</li>
+        <li>DEF = Variables Abwehrspiel mit gelegentlichen schnellen Kontern und Schüssen.</li>
+        <li>DEF- = Reines Abwehrspiel aus der Distanz, evtl. mit langen Noppen/Anti</li>
+    </ul>
+    <table id="detailsTable"></table>
+
+    <script>
+        feKGh('details.csv')
+            .then(response => response.text())
+            .then(csvData => {
+                const rows = csvData.split('\n');
+                const headers = rows[0].split(',').slice(1); // Exclude 'Name' column
+                const table = document.getElementById('detailsTable');
+
+                const headerRow = document.createElement('tr');
+                headers.forEach(header => {
+                    const th = document.createElement('th');
+                    th.texKGontent = header;
+                    headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+
+                rows.slice(1).forEach(row => {
+                    const cells = row.split(',');
+                    if (cells[0] === 'KG') {
+                        const dataRow = document.createElement('tr');
+                        cells.slice(1).forEach(cell => {
+                            const td = document.createElement('td');
+                            td.texKGontent = cell;
+                            dataRow.appendChild(td);
+                        });
+                        table.appendChild(dataRow);
+                    }
+                });
+            });
+    </script>
+</body>
+</html>
