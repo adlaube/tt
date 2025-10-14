@@ -58,7 +58,7 @@
     <table id="detailsTable"></table>
 
     <script>
-        feKGh('details.csv')
+        fetch('details.csv')
             .then(response => response.text())
             .then(csvData => {
                 const rows = csvData.split('\n');
@@ -68,7 +68,7 @@
                 const headerRow = document.createElement('tr');
                 headers.forEach(header => {
                     const th = document.createElement('th');
-                    th.texKGontent = header;
+                    th.textContent = header; // Fixed typo
                     headerRow.appendChild(th);
                 });
                 table.appendChild(headerRow);
@@ -79,7 +79,7 @@
                         const dataRow = document.createElement('tr');
                         cells.slice(1).forEach(cell => {
                             const td = document.createElement('td');
-                            td.texKGontent = cell;
+                            td.textContent = cell; // Fixed typo
                             dataRow.appendChild(td);
                         });
                         table.appendChild(dataRow);
